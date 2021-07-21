@@ -1,0 +1,16 @@
+################################################################################
+
+FROM centos:8
+
+LABEL name="EK Image on CentOS 8" \
+      vendor="ESSENTIAL KAOS" \
+      maintainer="Anton Novojilov" \
+      license="Apache-2.0" \
+      version="2021.07.21"
+
+RUN yum clean all && \
+    yum -y update && \
+    yum clean all && \
+    rm -rf /var/cache/yum
+
+################################################################################
