@@ -25,7 +25,7 @@ jobs:
           docker run --rm essentialkaos/centos:7 yum check-update
 
       - name: Trigger image rebuild
-        if: ${{ steps.update_check.conclusion == 'failure' }}
+        if: ${{ steps.update_check.outcome == 'failure' }}
         run: |
           curl -H "Content-Type: application/json" --data '{"docker_tag": "7"}' -X POST ${{ secrets.BUILD_TRIGGER_URL }}
 
@@ -47,6 +47,6 @@ jobs:
           docker run --rm essentialkaos/centos:8 dnf check-update
 
       - name: Trigger image rebuild
-        if: ${{ steps.update_check.conclusion == 'failure' }}
+        if: ${{ steps.update_check.outcome == 'failure' }}
         run: |
           curl -H "Content-Type: application/json" --data '{"docker_tag": "8"}' -X POST ${{ secrets.BUILD_TRIGGER_URL }}
