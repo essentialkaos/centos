@@ -21,9 +21,8 @@ jobs:
       - name: Check for updates
         id: update_check
         continue-on-error: true
-        uses: docker://essentialkaos/centos:7
-        with:
-          args: yum check-update
+        run : |
+          docker run --rm -it essentialkaos/centos:7 yum check-update
 
       - name: Trigger image rebuild
         if: ${{ steps.update_check.conclusion == 'failure' }}
@@ -44,9 +43,8 @@ jobs:
       - name: Check for updates
         id: update_check
         continue-on-error: true
-        uses: docker://essentialkaos/centos:8
-        with:
-          args: dnf check-update
+        run : |
+          docker run --rm -it essentialkaos/centos:8 dnf check-update
 
       - name: Trigger image rebuild
         if: ${{ steps.update_check.conclusion == 'failure' }}
