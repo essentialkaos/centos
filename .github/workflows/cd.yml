@@ -7,9 +7,13 @@ on:
     - cron: '30 3 * * *'
 
 jobs:
-  CentOS7:
-    name: CentOS 7
+  CentOS:
+    name: CentOS
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        version: [ '7', '8' ]
 
     steps:
       - name: Login to DockerHub
@@ -22,31 +26,39 @@ jobs:
         id: update_check
         continue-on-error: true
         run : |
-          docker run --rm essentialkaos/centos:7 yum check-update
+          if [[ "${{ matrix.version }}" == "7" ]] ; then
+            docker run --rm essentialkaos/centos:${{ matrix.version }} yum check-update
+          else
+            docker run --rm essentialkaos/centos:${{ matrix.version }} dnf check-update
+          fi
 
       - name: Trigger image rebuild
         if: ${{ steps.update_check.outcome == 'failure' }}
         run: |
-          curl -H "Content-Type: application/json" --data '{"docker_tag": "7"}' -X POST ${{ secrets.BUILD_TRIGGER_URL }}
+          curl -H "Content-Type: application/json" --data '{"docker_tag": "${{ matrix.version }}"}' -X POST ${{ secrets.BUILD_TRIGGER_URL }}
 
-  CentOS8:
-    name: CentOS 8
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Check for updates
-        id: update_check
-        continue-on-error: true
-        run : |
-          docker run --rm essentialkaos/centos:8 dnf check-update
-
-      - name: Trigger image rebuild
-        if: ${{ steps.update_check.outcome == 'failure' }}
+      - name: Check for rebuilt base image
+        if: ${{ steps.update_check.outcome != 'failure' }}
         run: |
-          curl -H "Content-Type: application/json" --data '{"docker_tag": "8"}' -X POST ${{ secrets.BUILD_TRIGGER_URL }}
+          echo "Running check…"
+
+          echo "::group::Fetching base image…"
+          docker pull centos:${{ matrix.version }}
+          echo "::endgroup::"
+
+          echo "::group::Check layers digests…"
+
+          orig_dig=$(docker inspect "centos:${{ matrix.version }}" | jq -r '.[0].RootFS.Layers[0]')
+          our_dig=$(docker inspect "essentialkaos/centos:${{ matrix.version }}" | jq -r '.[0].RootFS.Layers[0]')
+
+          echo "Original: ${orig_dig}"
+          echo "Our:      ${our_dig}"
+
+          echo "::endgroup::"
+
+          if [[ "$orig_dig" != "$our_dig" ]] ; then
+            echo "Base image was updated! Sending request to DockerHub for rebuilding ${{ matrix.version }}"
+            curl -H "Content-Type: application/json" --data '{"docker_tag": "${{ matrix.version }}"}' -X POST ${{ secrets.BUILD_TRIGGER_URL }}
+          else
+            echo "No base image updates"
+          fi
