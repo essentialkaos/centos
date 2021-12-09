@@ -5,6 +5,13 @@ on:
     branches: [master]
   schedule:
     - cron: '30 3 * * *'
+  workflow_dispatch:
+    inputs:
+      force_rebuild:
+        description: 'Force container rebuild'
+        required: true
+        type: choice
+        options: [yes, no]
 
 jobs:
   CentOS:
@@ -26,10 +33,14 @@ jobs:
         id: update_check
         continue-on-error: true
         run : |
-          if [[ "${{ matrix.version }}" == "7" ]] ; then
-            docker run --rm essentialkaos/centos:${{ matrix.version }} yum check-update
+          if [[ "${{ github.event.inputs.force_rebuild }}" == "yes" ]] ; then
+            exit 1
           else
-            docker run --rm essentialkaos/centos:${{ matrix.version }} dnf check-update
+            if [[ "${{ matrix.version }}" == "7" ]] ; then
+              docker run --rm essentialkaos/centos:${{ matrix.version }} yum check-update
+            else
+              docker run --rm essentialkaos/centos:${{ matrix.version }} dnf check-update
+            fi
           fi
 
       - name: Trigger image rebuild
