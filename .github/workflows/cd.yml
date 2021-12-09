@@ -33,7 +33,7 @@ jobs:
         id: update_check
         continue-on-error: true
         run : |
-          if [[ "${{ github.event.inputs.force_rebuild }}" == "yes" ]] ; then
+          if [[ "${{ github.event.inputs.force_rebuild }}" == "true" ]] ; then
             exit 1
           else
             if [[ "${{ matrix.version }}" == "7" ]] ; then
