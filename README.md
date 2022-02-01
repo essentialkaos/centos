@@ -10,13 +10,12 @@
 
 <br/>
 
-This repository contains Dockerfiles for CentOS 7 and 8 for automatic image rebuild with the latest packages installed. The resulting images are usually bigger than base images but more secure (due to the very long period between base images rebuild).
+This repository contains Dockerfiles for CentOS 7 for automatic image rebuild with the latest packages installed. The resulting images are usually bigger than base images but more secure (due to the very long period between base images rebuild).
 
 ### Usage
 
 ```bash
 docker pull essentialkaos/centos:7
-docker pull essentialkaos/centos:8
 ```
 
 ### Contributing
