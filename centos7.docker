@@ -2,7 +2,7 @@
 
 FROM centos:7
 
-LABEL name="EK Image on CentOS 7" \
+LABEL name="EK Image with CentOS 7" \
       vendor="ESSENTIAL KAOS" \
       maintainer="Anton Novojilov" \
       license="Apache-2.0" \
