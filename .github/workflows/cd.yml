@@ -59,7 +59,7 @@ jobs:
               exit 0
             fi
 
-            if ! docker run --rm ${{github.repository}}:${{matrix.version}} checkupdate ; then
+            if ! docker run --rm ${{github.repository}}:${{ matrix.version }} yum check-update ; then
               echo "::warning::Rebuild ${{matrix.version}} (reason: packages update)"
               echo "::set-output name=build::true"
               exit 0
