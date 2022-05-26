@@ -13,8 +13,16 @@ This repository contains Dockerfiles for CentOS 7 for automatic image rebuild wi
 
 ### Usage
 
+Using DockerHub:
+
 ```bash
 docker pull essentialkaos/centos:7
+```
+
+Using GitHub Container Registry:
+
+```bash
+docker pull ghcr.io/essentialkaos/centos:7
 ```
 
 ### Contributing
