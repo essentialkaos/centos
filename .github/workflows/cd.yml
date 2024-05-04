@@ -17,6 +17,9 @@ permissions:
   packages: write
   contents: read
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
   CentOS:
     name: CentOS
@@ -54,13 +57,13 @@ jobs:
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
           else
-            if ! docker pull ${{github.repository}}:${{matrix.version}} ; then
+            if ! docker pull "${{env.REGISTRY}}/${{github.repository}}:${{matrix.version}}" ; then
               echo "::warning::Rebuild ${{matrix.version}} (reason: new image)"
               echo "build=true" >> $GITHUB_OUTPUT
               exit 0
             fi
 
-            if ! docker run --rm ${{github.repository}}:${{ matrix.version }} yum check-update ; then
+            if ! docker run --rm "${{env.REGISTRY}}/${{github.repository}}:${{matrix.version}}" yum check-update ; then
               echo "::warning::Rebuild ${{matrix.version}} (reason: packages update)"
               echo "build=true" >> $GITHUB_OUTPUT
               exit 0
@@ -70,11 +73,16 @@ jobs:
           echo "::endgroup::"
 
           echo -e "::group::\033[34mChecking for rebuilt base image…\033[0m"
+          echo "Pulling centos:${{matrix.version}} from registry…"
+          echo ""
 
-          docker pull centos:${{matrix.version}}
+          if ! docker pull "centos:${{matrix.version}}" ; then
+            echo "::error::Can't pull image centos:${{matrix.version}}"
+            exit 1
+          fi
 
           orig_dig=$(docker inspect "centos:${{matrix.version}}" | jq -r '.[0].RootFS.Layers[0]')
-          our_dig=$(docker inspect "${{github.repository}}:${{matrix.version}}" | jq -r '.[0].RootFS.Layers[0]')
+          our_dig=$(docker inspect "${{env.REGISTRY}}/${{github.repository}}:${{matrix.version}}" | jq -r '.[0].RootFS.Layers[0]')
 
           echo ""
           echo "Original: ${orig_dig}"
@@ -112,13 +120,13 @@ jobs:
       - name: Show info about images
         uses: essentialkaos/docker-info-action@v1
         with:
-          image: ${{github.repository}}:${{matrix.version}}
+          image: ${{env.REGISTRY}}/${{github.repository}}:${{matrix.version}}
 
       - name: Scan final image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'ghcr.io/${{github.repository}}:${{matrix.version}}'
-          format: 'table'
+          image-ref: "${{env.REGISTRY}}/${{github.repository}}:${{matrix.version}}"
+          format: "table"
           ignore-unfixed: true
-          severity: 'LOW,MEDIUM,HIGH,CRITICAL'
-          scanners: 'vuln'
+          severity: "LOW,MEDIUM,HIGH,CRITICAL"
+          scanners: "vuln"
