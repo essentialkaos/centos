@@ -1,0 +1,12 @@
+<svg width="914" height="400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill="#fff" d="M0 0h914v400H0z"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M449.262 196.413l3.553 3.533-3.553 3.532h-25.01v11.771L409 199.946l15.252-15.045v11.512h25.01z" fill="#932279"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M460.587 192.262l-3.532 3.554-3.533-3.554v-25.01h-11.771L457.055 152l15.045 15.252h-11.513v25.01z" fill="#EFA724"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M464.738 203.587l-3.553-3.532 3.553-3.533h25.01v-11.771L505 200.055 489.748 215.1v-11.513h-25.01z" fill="#262577"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M453.413 207.738l3.532-3.553 3.533 3.553v25.01h11.771L456.945 248 441.9 232.748h11.513v-25.01z" fill="#9CCD2A"/>
+  <path d="M423.355 166.355h30.389v30.389h-30.389v-30.389z" fill="#9CCD2A" stroke="#fff" stroke-width="3.769"/>
+  <path d="M460.256 166.355h30.388v30.389h-30.388v-30.389z" fill="#932279" stroke="#fff" stroke-width="3.769"/>
+  <path d="M460.256 203.256h30.388v30.389h-30.388v-30.389z" fill="#EFA724" stroke="#fff" stroke-width="3.769"/>
+  <path d="M423.355 203.256h30.389v30.389h-30.389v-30.389z" fill="#262577" stroke="#fff" stroke-width="3.769"/>
+  <path d="M409.42 200l21.488-21.488L452.396 200l-21.488 21.489L409.42 200zm26.092-26.092L457 152.42l21.488 21.488L457 195.396l-21.488-21.488zM461.604 200l21.488-21.488L504.58 200l-21.488 21.488L461.604 200zm-26.092 26.093L457 204.605l21.488 21.488L457 247.581l-21.488-21.488z" stroke="#fff" stroke-width="3.769"/>
+</svg>
