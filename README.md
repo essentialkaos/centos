@@ -1,13 +1,11 @@
 <p align="center"><a href="#readme"><img src=".github/images/card.svg"/></a></p>
 
-<p align="center">
-  <a href="https://kaos.sh/w/centos/cd"><img src="https://kaos.sh/w/centos/cd.svg" alt="GitHub Actions CD Status" /></a>
-  <a href="#license"><img src=".github/images/license.svg"/></a>
-</p>
-
 <p align="center"><a href="#usage">Usage</a> • <a href="#contributing">Contributing</a> • <a href="#license">License</a></p>
 
 <br/>
+
+> [!CAUTION]
+> **This repository has been archived due to the [end-of-life of CentOS 7](https://www.redhat.com/en/blog/centos-linux-has-reached-its-end-life-eol). It should no longer be used.**
 
 This repository contains Dockerfiles for CentOS 7 for automatic image rebuild with the latest packages installed. The resulting images are usually bigger than base images but more secure (due to the very long period between base images rebuild).
 
